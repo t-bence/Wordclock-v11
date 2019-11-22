@@ -57,7 +57,7 @@ int intMinute = 0;
 #define ENGLISH 1
 
 // nyelv beallitasa
-#define LANGUAGE ENGLISH
+#define LANGUAGE HUNGARIAN
 
 // colours
 #define colourButtonPin   2   // to adjust the colour
@@ -466,7 +466,7 @@ void setup() {
     // Serial.println("RTC has begun");
 
     pinMode(colourButtonPin, INPUT_PULLUP); // pullup resistor, no need for extra resistor in the circuit
-    attachInterrupt(digitalPinToInterrupt(colourButtonPin), colourButtonPressed, RISING); // attach interrupt
+    attachInterrupt(digitalPinToInterrupt(colourButtonPin), colourButtonPressed, FALLING); // attach interrupt
 
     // read from EEPROM
     chosenColour = EEPROM.read(EEPROM_ADDR);
