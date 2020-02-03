@@ -1,9 +1,7 @@
 // Bence Wordclock v11
 
-// EEPROM-ba menti a kivalasztott szint, es indulaskor ugyanazzal kezd!
-// hasznaljuk JChristiensen Timezone library-jat
-
-// this is the modified wordclock file by Bence TOTH
+// Saves last used color to EEPROM and starts with that
+// Uses the Timezone library by JChristiensen
 
 // to use the different digital clock: DS3231
 // using Rinky-Dinky electronics code by Hanning Karlsen
@@ -18,14 +16,15 @@
 // Libraries used include:
 // NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
 ///////////////////////////////////////////////////////////////////
+
 #include <Arduino.h>
 #include <Wire.h>
 // #include <Button.h>
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 #include <DS3231.h>
-#include <TimeLib.h>        //http://www.arduino.cc/playground/Code/Time
-#include <Timezone.h>    //https://github.com/JChristensen/Timezone
+#include <TimeLib.h>        // http://www.arduino.cc/playground/Code/Time
+#include <Timezone.h>       // https://github.com/JChristensen/Timezone
 
 // include the words
 #include <WordclockWords.h>
@@ -494,4 +493,4 @@ void loop() {
     redraw = false;
   }
 
-} // end of loop()
+}
