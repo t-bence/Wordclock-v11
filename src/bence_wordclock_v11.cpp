@@ -62,7 +62,7 @@ int intMinute = 0;
 // colours
 #define colourButtonPin   2   // to adjust the colour
 #define coloursDefined    15  // number of colours
-volatile byte chosenColour = 0; // the colour currently stored
+volatile byte chosenColour = 12; // the colour currently stored
 
 // ezek RGB szinek
 uint32_t colours[] = {pixels.Color(127, 127, 0), // sarga
@@ -458,17 +458,17 @@ void writeTime() {
 void setup() {
     Serial.begin(115200); // debugging only
 
-    Serial.println("Staring up...");
+    Serial.println("Starting up...");
     Wire.begin();
     // Serial.println("Wire has begun");
 
     rtc.begin();
     // Serial.println("RTC has begun");
 
-    pinMode(colourButtonPin, INPUT_PULLUP); // pullup resistor, no need for extra resistor in the circuit
-    attachInterrupt(digitalPinToInterrupt(colourButtonPin), colourButtonPressed, FALLING); // attach interrupt
+    pinMode(colourButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
+    attachInterrupt(digitalPinToInterrupt(colourButtonPin), colourButtonPressed, RISING);
 
-    // read from EEPROM
+    // read from EEPROM.
     chosenColour = EEPROM.read(EEPROM_ADDR);
     if (chosenColour >= coloursDefined) { // if an error has occured
       chosenColour = 0;

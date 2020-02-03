@@ -9,3 +9,16 @@
 *.hex
 *.elf
 *.checksum
+lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
+lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
+lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
+lib/DS3231/examples/Arduino/DS3231_Serial_Hard/DS3231_Serial_Hard.ino
+lib/DS3231/examples/Arduino/DS3231_Temperature/DS3231_Temperature.ino
+lib/DS3231/examples/Arduino/DS3231_UnixTime/DS3231_UnixTime.ino
+lib/DS3231/examples/chipKit/DS3231_Serial_Easy/DS3231_Serial_Easy.pde
+lib/DS3231/examples/chipKit/DS3231_Serial_Hard/DS3231_Serial_Hard.pde
+lib/DS3231/examples/chipKit/DS3231_Temperature/DS3231_Temperature.pde
+lib/DS3231/examples/chipKit/DS3231_UnixTime/DS3231_UnixTime.pde
+.pio/build/project.checksum
+.pio/build/atmega328pb/firmware.elf
+.pio/build/atmega328pb/firmware.hex

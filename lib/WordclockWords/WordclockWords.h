@@ -4,7 +4,6 @@
 // magyar szavak
 
 // ha szembol nezve bal oldalt kezdodik a LED-sor...
-/*
 byte MOST[] = {105, 3};
 byte ORA[]  = {30, 2};
 byte VAN[]  = {14, 2};
@@ -33,10 +32,10 @@ byte TIZ[] = {33, 2};
 byte TIZENEGY1[] = {61, 4};
 byte TIZENEGY2[] = {49, 2};
 byte TIZENKETTO[] = {56, 9};
-*/
+
 
 // ha szembol nezve jobb oldalon kezdodik a LED-sor... LOL
-
+/*
 byte MOST[] = {100, 3};
 byte ORA[]  = {22, 2};
 byte VAN[]  = {16, 2};
@@ -65,7 +64,7 @@ byte TIZ[] = {41, 2};
 byte TIZENEGY1[] = {55, 4};
 byte TIZENEGY2[] = {47, 2};
 byte TIZENKETTO[] = {55, 9};
-
+*/
 
 
 //////// ANGOLUL - ha szembol nezve jobbrol indul a led szalag
