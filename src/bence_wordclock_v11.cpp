@@ -328,7 +328,11 @@ void loop() {
     // Check if it's time to update and show the time
     if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw) {
         auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
+
+        Serial.print(localTime.hour); Serial.print('-'); Serial.println(localTime.minute);
+
         showTime(localTime.hour, localTime.minute);
+        
         redrawTimer = millis();
         redraw = false;
     }
