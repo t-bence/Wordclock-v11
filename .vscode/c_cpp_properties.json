@@ -1,49 +1,49 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
-            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
-        },
-        {
-            "name": "Linux",
+            "name": "PlatformIO",
             "includePath": [
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/src",
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/WordclockWords",
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Timezone",
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Time",
-                "/home/bence/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/DS3231",
-                "/home/bence/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Adafruit_NeoPixel",
-                "/home/bence/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "/home/bence/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
-                "/home/bence/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "/home/bence/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "/home/bence/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "/home/bence/.platformio/packages/tool-unity",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/src",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/WordclockWords",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Timezone",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Time",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/DS3231",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Adafruit_NeoPixel",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/src",
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/WordclockWords",
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Timezone",
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Time",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/DS3231",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                    "/home/bence/Documents/PlatformIO/Projects/wordclock-v11/lib/Adafruit_NeoPixel",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "/home/bence/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "/home/bence/.platformio/packages/tool-unity",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/src",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/WordclockWords",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Timezone",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Time",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/DS3231",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/Users/bencetoth/Documents/dev/Wordclock-v11/lib/Adafruit_NeoPixel",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/Users/bencetoth/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=40100",
+                "PLATFORMIO=60116",
                 "ARDUINO_AVR_PRO",
                 "F_CPU=8000000L",
                 "ARDUINO_ARCH_AVR",
@@ -51,10 +51,13 @@
                 "__AVR_ATmega328P__",
                 ""
             ],
-            "intelliSenseMode": "clang-x64",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "compilerPath": "\"/home/bence/.platformio/packages/toolchain-atmelavr/bin/avr-gcc\" -mmcu=atmega328p"
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "/Users/bencetoth/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
         }
     ],
     "version": 4
