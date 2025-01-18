@@ -51,7 +51,7 @@ volatile uint32_t colorOut = COLORS[chosenColor];
 
 const int EEPROM_ADDR = 0;
 
-const unsigned long REDRAW_PERIOD = 30000; // milliseconds
+const unsigned long REDRAW_PERIOD = 10000; // milliseconds
 
 // to debounce the buttons
 volatile unsigned long colorTimer = 0;
@@ -63,7 +63,7 @@ void colorButtonPressed()
 {
     if (millis() - colorTimer > 400UL)
     {
-        Serial.println("+++ color Button Pressed +++");
+        Serial.println("Color button pressed");
         chosenColor = chosenColor + 1;
         if (chosenColor > (colorsDefined - 1))
         {
@@ -86,7 +86,6 @@ void show(byte data[])
 // this function shows the time
 void showTime(int hour, int min)
 {
-
     pixels.fill();
 
     bool showNext = false;
@@ -189,52 +188,24 @@ void showTime(int hour, int min)
 
     if (showNext)
     {
-        hour = hour + 1;
+        hour = (hour % 12) + 1;
     }
 
     // set hours
-    switch (hour)
-    {
-    case 1:
-        show(EGY);
-        break;
-    case 2:
-        show(KETTO);
-        break;
-    case 3:
-        show(HAROM);
-        break;
-    case 4:
-        show(NEGY);
-        break;
-    case 5:
-        show(OT);
-        break;
-    case 6:
-        show(HAT);
-        break;
-    case 7:
-        show(HET);
-        break;
-    case 8:
-        show(NYOLC);
-        break;
-    case 9:
-        show(KILENC);
-        break;
-    case 10:
-        show(TIZ);
-        break;
-    case 11:
-        show(TIZENEGY1);
-        show(TIZENEGY2);
-        break;
-    case 12:
-        show(TIZENKETTO);
-        break;
-    default:
-        show(ERROR);
-        break;
+    switch (hour) {
+        case 1: show(EGY); break;
+        case 2: show(KETTO); break;
+        case 3: show(HAROM); break;
+        case 4: show(NEGY); break;
+        case 5: show(OT); break;
+        case 6: show(HAT); break;
+        case 7: show(HET); break;
+        case 8: show(NYOLC); break;
+        case 9: show(KILENC); break;
+        case 10: show(TIZ); break;
+        case 11: show(TIZENEGY1); show(TIZENEGY2); break;
+        case 12: show(TIZENKETTO); break;
+        default: show(ERROR); break;
     }
 #endif
 #ifdef ENGLISH
@@ -316,51 +287,24 @@ void showTime(int hour, int min)
 
     if (showNext)
     {
-        hour = hour + 1;
+        hour = (hour % 12) + 1;
     }
 
     // set hour
-    switch (hour)
-    {
-    case 1:
-        show(ONE);
-        break;
-    case 2:
-        show(TWO);
-        break;
-    case 3:
-        show(THREE);
-        break;
-    case 4:
-        show(FOUR);
-        break;
-    case 5:
-        show(FIVE);
-        break;
-    case 6:
-        show(SIX);
-        break;
-    case 7:
-        show(SEVEN);
-        break;
-    case 8:
-        show(EIGHT);
-        break;
-    case 9:
-        show(NINE);
-        break;
-    case 10:
-        show(TEN);
-        break;
-    case 11:
-        show(ELEVEN);
-        break;
-    case 12:
-        show(TWELVE);
-        break;
-    default:
-        show(ERROR);
-        break;
+    switch (hour) {
+        case 1: show(ONE); break;
+        case 2: show(TWO); break;
+        case 3: show(THREE); break;
+        case 4: show(FOUR); break;
+        case 5: show(FIVE); break;
+        case 6: show(SIX); break;
+        case 7: show(SEVEN); break;
+        case 8: show(EIGHT); break;
+        case 9: show(NINE); break;
+        case 10: show(TEN); break;
+        case 11: show(ELEVEN); break;
+        case 12: show(TWELVE); break;
+        default: show(ERROR); break;
     }
 #endif
     pixels.show();
@@ -374,8 +318,8 @@ void updateAndShowTime()
     // Convert UTC time to local time
     local = hunTZ.toLocal(utc, &tcr);
 
-    // subtract 2.5 minutes to "center" the range
-    local -= TWO_HALF_MINUTES;
+    // add 2.5 minutes to "center" the range
+    local += TWO_HALF_MINUTES;
 
     // Print the local time with the time zone abbreviation
     printTime(local, tcr->abbrev);

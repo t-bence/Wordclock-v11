@@ -27,3 +27,4 @@ lib/DS3231/examples/chipKit/DS3231_UnixTime/DS3231_UnixTime.pde
 .vscode
 .vscode/*
 .pio/build/project.checksum
+.pio/build/project.checksum
