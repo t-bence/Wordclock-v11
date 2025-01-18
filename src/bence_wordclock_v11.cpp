@@ -8,38 +8,21 @@
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 #include <DS3231.h>
-#include <TimeLib.h>
-#include <Timezone.h>
 
 // custom code
 #include <WordclockWords.h>
+#include <LocalTime.h>
 #include <Debug.h>
 #include <Colors.h>
 
-// set up rules for changing time
-TimeChangeRule myDST = {"CEST", Last, Sun, Mar, 2, 120}; // Daylight time = UTC + 2 hours
-TimeChangeRule mySTD = {"CET", Last, Sun, Oct, 3, 60};   // Standard time = UTC + 1 hours
-Timezone hunTZ(myDST, mySTD);
-
-TimeChangeRule *tcr; // pointer to the time change rule
-time_t utc, local;
-
 // init RTC
 DS3231 rtc(SDA, SCL);
-Time t;
 
 // neopixel setup
 #define PIN 12
 #define NUMPIXELS 110
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
-byte zero = 0x00; // workaround for issue #527
-
-#define TWO_HALF_MINUTES 150 // 2.5 minutes in seconds
-
-int intHour = 0;
-int intMinute = 0;
 
 // colors
 #define colorButtonPin 2        // to adjust the color
@@ -80,7 +63,7 @@ void colorButtonPressed()
 
 void show(byte data[])
 {
-    pixels.fill(data[0], data[1]);
+    pixels.fill(chosenColor, data[0], data[1]);
 }
 
 // this function shows the time
@@ -310,29 +293,6 @@ void showTime(int hour, int min)
     pixels.show();
 }
 
-void updateAndShowTime()
-{
-    // Get the current UTC time from the RTC
-    utc = static_cast<time_t>(rtc.getUnixTime(rtc.getTime()));
-
-    // Convert UTC time to local time
-    local = hunTZ.toLocal(utc, &tcr);
-
-    // add 2.5 minutes to "center" the range
-    local += TWO_HALF_MINUTES;
-
-    // Print the local time with the time zone abbreviation
-    printTime(local, tcr->abbrev);
-
-    // Extract the hour and minute from the local time
-    intHour = hour(local);
-    intMinute = minute(local);
-
-    // show hours between 1-12
-    intHour = (intHour % 12 == 0) ? 12 : intHour % 12;
-
-    showTime(intHour, intMinute);
-}
 
 void setup()
 {
@@ -364,12 +324,11 @@ void setup()
     redraw = true; // write time immediately
 }
 
-void loop()
-{
-
-    if ((millis() - redrawTimer > REDRAW_PERIOD) or (redraw))
-    {
-        updateAndShowTime();
+void loop() {
+    // Check if it's time to update and show the time
+    if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw) {
+        auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
+        showTime(localTime.hour, localTime.minute);
         redrawTimer = millis();
         redraw = false;
     }
