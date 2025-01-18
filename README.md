@@ -14,4 +14,8 @@ Loosely based on TinkerElectric.com Word Clock
 
 This code uses the DS1307 Real Time Clock and presents the appropriate time in words. Original code by John Missikos and Damien Brombal (c) 2013
 
-Libraries used include: NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
+Libraries used include:
+
+- NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
+- [Arduino Time](http://www.arduino.cc/playground/Code/Time)
+- [Timezone by JChristensen](https://github.com/JChristensen/Timezone)
