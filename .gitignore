@@ -1,4 +1,5 @@
 .vscode/
+.pio/build/
 .pioenvs
 .piolibdeps
 .clang_complete
