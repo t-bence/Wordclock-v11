@@ -1,16 +1,15 @@
 #include <Arduino.h>
 #include <Wire.h>
-// #include <Button.h>
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 #include <DS3231.h>
 #include <TimeLib.h>        // http://www.arduino.cc/playground/Code/Time
 #include <Timezone.h>       // https://github.com/JChristensen/Timezone
-#include <Colors.h>
 
-// include the words
+// custom code
 #include <WordclockWords.h>
 #include <Debug.h>
+#include <Colors.h>
 
 // set up rules for changing time
 TimeChangeRule myDST = {"CEST", Last, Sun, Mar, 2, 120};    //Daylight time = UTC + 2 hours
@@ -32,13 +31,15 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ80
 
 byte zero = 0x00; //workaround for issue #527
 
+#define TWO_HALF_MINUTES 150 // 2.5 minutes in seconds
+
 int intHour = 0;
 int intMinute = 0;
 
 #define HUNGARIAN 0
 #define ENGLISH 1
 
-// nyelv beallitasa
+// set language
 #define LANGUAGE HUNGARIAN
 
 // colors
@@ -51,17 +52,15 @@ volatile uint32_t colorOut = COLORS[chosenColor];
 
 const int EEPROM_ADDR = 0;
 
-const unsigned long REDRAW_PERIOD = 30000;
+const unsigned long REDRAW_PERIOD = 30000; // milliseconds
 
 // to debounce the buttons
 volatile unsigned long colorTimer = 0;
 volatile bool redraw = true;
 unsigned long redrawTimer = 0;
 
-// =============================== FUNCTIONS BEGIN HERE ========================
 
-
-
+// set next color, save to EEPROM and force redraw
 void colorButtonPressed() {
     // check when was the last press for debouncing
     if (millis() - colorTimer > 400UL) {
@@ -78,8 +77,6 @@ void colorButtonPressed() {
 }
 
 
-// ========= processing, displaying =============
-
 void show(byte data[]) {
     byte start = data[0];
     byte len = data[1];
@@ -89,21 +86,21 @@ void show(byte data[]) {
     }
 }
 
+// this function turns all LEDs off
 void clearAll() {
-    for(int i = 0; i < NUMPIXELS; i++) {
-        // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-        pixels.setPixelColor(i, 0); // switch all off
+    for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, 0);
     }
 }
 
-// ez a fv allitja be az idot...
+// this function shows the time in Hungarian
 void showTimeHun(int hour, int min) {
 
     clearAll();
 
     bool showNext = false;
 
-    // percek beallitasa
+    // set minutes
     // a percek / negyed orak
     if (min < 5) {
         show(MOST);
@@ -187,11 +184,7 @@ void showTimeHun(int hour, int min) {
         hour = hour + 1;
     }
 
-    // csak 12 orat jelzunk, a nulla is 12
-    if (hour == 0) { hour = 12; }
-    else if (hour > 12) { hour -= 12; }
-
-    // ora beallitasa
+    // set hours
     switch (hour) {
         case 1:
             show(EGY);
@@ -231,14 +224,14 @@ void showTimeHun(int hour, int min) {
             show(TIZENKETTO);
             break;
         default:
-            // do nothing
+            show(ERROR);
             break;
     }
 
     pixels.show();
 }
 
-// ez a fv allitja be az idot... angolul
+// this function displays the time in English
 void showTimeEng(int hour, int min) {
 
     clearAll();
@@ -248,7 +241,7 @@ void showTimeEng(int hour, int min) {
     show(IT);
     show(IS);
 
-    // percek beallitasa
+    // set minutes
     // a percek / negyed orak
     if (min < 5) {
         show(OCLOCK);
@@ -309,11 +302,7 @@ void showTimeEng(int hour, int min) {
         hour = hour + 1;
     }
 
-    // csak 12 orat jelzunk, a nulla is 12
-    if (hour == 0) { hour = 12; }
-    else if (hour > 12) { hour -= 12; }
-
-    // ora beallitasa
+    // set hour
     switch (hour) {
         case 1:
             show(ONE);
@@ -352,7 +341,7 @@ void showTimeEng(int hour, int min) {
             show(TWELVE);
             break;
         default:
-            // do nothing in case of errors
+            show(ERROR);
             break;
     }
 
@@ -365,6 +354,9 @@ void updateAndShowTime() {
   
   // Convert UTC time to local time
   local = hunTZ.toLocal(utc, &tcr);
+
+  // subtract 2.5 minutes to "center" the range
+  local -= TWO_HALF_MINUTES;
   
   // Print the local time with the time zone abbreviation
   printTime(local, tcr->abbrev);
@@ -372,6 +364,10 @@ void updateAndShowTime() {
   // Extract the hour and minute from the local time
   intHour = hour(local);
   intMinute = minute(local);
+
+  // show hours between 1-12
+  if (intHour == 0) { intHour = 12; }
+  else if (intHour > 12) { intHour -= 12; }
 
   // Show the time based on the selected language
   if (LANGUAGE == HUNGARIAN) {
