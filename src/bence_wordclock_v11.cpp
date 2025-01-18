@@ -1,22 +1,3 @@
-// Bence Wordclock v11
-
-// Saves last used color to EEPROM and starts with that
-// Uses the Timezone library by JChristiensen
-
-// to use the different digital clock: DS3231
-// using Rinky-Dinky electronics code by Hanning Karlsen
-//////////////////////////////////////////////////////////////////
-//
-// TinkerElectric.com
-// Word Clock
-//
-// This code uses the DS1307 Real Time Clock and presents the appropriate
-// time in words. Original code by John Missikos and Damien Brombal (c) 2013
-//
-// Libraries used include:
-// NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
-///////////////////////////////////////////////////////////////////
-
 #include <Arduino.h>
 #include <Wire.h>
 // #include <Button.h>
@@ -29,13 +10,14 @@
 
 // include the words
 #include <WordclockWords.h>
+#include <Debug.h>
 
 // set up rules for changing time
 TimeChangeRule myDST = {"CEST", Last, Sun, Mar, 2, 120};    //Daylight time = UTC + 2 hours
 TimeChangeRule mySTD = {"CET", Last, Sun, Oct, 3, 60};     //Standard time = UTC + 1 hours
 Timezone hunTZ(myDST, mySTD);
 
-TimeChangeRule *tcr;        //pointer to the time change rule, use to get TZ abbrev
+TimeChangeRule *tcr;        // pointer to the time change rule
 time_t utc, local;
 
 // init RTC
@@ -377,65 +359,27 @@ void showTimeEng(int hour, int min) {
     pixels.show();
 }
 
-
-void showTime(int hour, int min) {
-    if (LANGUAGE == HUNGARIAN) {
-      showTimeHun(hour, min);
-    }
-    else {
-      showTimeEng(hour, min);
-    }
-}
-
-//Print an integer in "00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
-void sPrintI00(int val)
-{
-    if (val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-}
-
-//Print an integer in ":00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
-void sPrintDigits(int val)
-{
-    Serial.print(':');
-    if(val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-}
-
-//Function to print time with time zone
-void printTime(time_t t, char *tz)
-{
-    sPrintI00(hour(t));
-    sPrintDigits(minute(t));
-    sPrintDigits(second(t));
-    Serial.print(' ');
-    Serial.print(dayShortStr(weekday(t)));
-    Serial.print(' ');
-    sPrintI00(day(t));
-    Serial.print(' ');
-    Serial.print(monthShortStr(month(t)));
-    Serial.print(' ');
-    Serial.print(year(t));
-    Serial.print(' ');
-    Serial.print(tz);
-    Serial.println();
-}
-
-
-void writeTime() {
+void updateAndShowTime() {
+  // Get the current UTC time from the RTC
   utc = (time_t) rtc.getUnixTime(rtc.getTime());
-  //printTime(utc, "UTC");
+  
+  // Convert UTC time to local time
   local = hunTZ.toLocal(utc, &tcr);
-  printTime(local, tcr -> abbrev);
+  
+  // Print the local time with the time zone abbreviation
+  printTime(local, tcr->abbrev);
 
+  // Extract the hour and minute from the local time
   intHour = hour(local);
   intMinute = minute(local);
 
-  showTime(intHour, intMinute);
+  // Show the time based on the selected language
+  if (LANGUAGE == HUNGARIAN) {
+    showTimeHun(intHour, intMinute);
+  } else {
+    showTimeEng(intHour, intMinute);
+  }
 }
-
 
 void setup() {
     Serial.begin(115200); // debugging only
@@ -471,7 +415,7 @@ void setup() {
 void loop() {
 
   if ((millis() - redrawTimer > REDRAW_PERIOD) or (redraw)) {
-    writeTime();
+    updateAndShowTime();
     redrawTimer = millis();
     redraw = false;
   }
