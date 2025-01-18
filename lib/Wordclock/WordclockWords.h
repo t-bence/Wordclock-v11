@@ -1,8 +1,8 @@
 uint8_t ERROR[] = {0, 50}; // show lots of LEDs on error
 
-// magyar szavak
+#ifdef HUNGARIAN
+#ifdef LEFT_TO_RIGHT // if LED line starts from the left when viewed from the front
 
-// ha szembol nezve bal oldalt kezdodik a LED-sor...
 uint8_t MOST[] = {105, 3};
 uint8_t ORA[]  = {30, 2};
 uint8_t VAN[]  = {14, 2};
@@ -31,10 +31,9 @@ uint8_t TIZ[] = {33, 2};
 uint8_t TIZENEGY1[] = {61, 4};
 uint8_t TIZENEGY2[] = {49, 2};
 uint8_t TIZENKETTO[] = {56, 9};
+#endif
 
-
-// ha szembol nezve jobb oldalon kezdodik a LED-sor... LOL
-/*
+#ifdef RIGHT_TO_LEFT
 uint8_t MOST[] = {100, 3};
 uint8_t ORA[]  = {22, 2};
 uint8_t VAN[]  = {16, 2};
@@ -49,7 +48,7 @@ uint8_t NEGYED[]= {88, 5};
 uint8_t MULVA[] = {82, 4};
 uint8_t FEL[] = {74, 2};
 uint8_t HAROMNEGYED[]= {88, 10};
-// orak
+// hours
 uint8_t EGY[] = {47, 2};
 uint8_t KETTO[] = {60, 4};
 uint8_t HAROM[] = {35, 4};
@@ -63,41 +62,12 @@ uint8_t TIZ[] = {41, 2};
 uint8_t TIZENEGY1[] = {55, 4};
 uint8_t TIZENEGY2[] = {47, 2};
 uint8_t TIZENKETTO[] = {55, 9};
-*/
+#endif
+#endif
 
+#ifdef ENGLISH
+#ifdef LEFT_TO_RIGHT
 
-//////// ANGOLUL - ha szembol nezve jobbrol indul a led szalag
-// az angol_layout_szamokkal.jpg alapjan
-/*
-// szavak, percek
-uint8_t IT[] = {99, 1};
-uint8_t IS[]  = {102, 1};
-uint8_t QUARTER[] = {91, 6};
-uint8_t TWENTY[] = {77, 5};
-uint8_t FIVE_MIN[] = {84, 3};
-uint8_t HALF[] = {73, 3};
-uint8_t TEN_MIN[] = {69, 2};
-uint8_t TO[] = {66, 1};
-uint8_t PAST[] = {55, 3};
-uint8_t OCLOCK[] = {0, 5};
-
-
-// orak
-uint8_t ONE[] = {52, 2};
-uint8_t TWO[] = {49, 2};
-uint8_t THREE[] = {44, 4};
-uint8_t FOUR[] = {33, 3};
-uint8_t FIVE[] = {37, 3};
-uint8_t SIX[] = {41, 2};
-uint8_t SEVEN[] = {60, 4};
-uint8_t EIGHT[] = {11, 4};
-uint8_t NINE[] = {29, 3};
-uint8_t TEN[] = {8, 2};
-uint8_t ELEVEN[] = {16, 5};
-uint8_t TWELVE[] = {22, 5};
-*/
-
-// ANGOLUL, ha szembol nezve balrol indul a led szalag
 
 uint8_t IT[] = {108, 1};
 uint8_t IS[] = {105, 1};
@@ -122,3 +92,33 @@ uint8_t NINE[] = {22, 3};
 uint8_t TEN[] = {0, 2};
 uint8_t ELEVEN[] = {11, 5};
 uint8_t TWELVE[] = {27, 5};
+
+#endif
+#ifdef RIGHT_TO_LEFT
+
+uint8_t IT[] = {99, 1};
+uint8_t IS[]  = {102, 1};
+uint8_t QUARTER[] = {91, 6};
+uint8_t TWENTY[] = {77, 5};
+uint8_t FIVE_MIN[] = {84, 3};
+uint8_t HALF[] = {73, 3};
+uint8_t TEN_MIN[] = {69, 2};
+uint8_t TO[] = {66, 1};
+uint8_t PAST[] = {55, 3};
+uint8_t OCLOCK[] = {0, 5};
+
+
+uint8_t ONE[] = {52, 2};
+uint8_t TWO[] = {49, 2};
+uint8_t THREE[] = {44, 4};
+uint8_t FOUR[] = {33, 3};
+uint8_t FIVE[] = {37, 3};
+uint8_t SIX[] = {41, 2};
+uint8_t SEVEN[] = {60, 4};
+uint8_t EIGHT[] = {11, 4};
+uint8_t NINE[] = {29, 3};
+uint8_t TEN[] = {8, 2};
+uint8_t ELEVEN[] = {16, 5};
+uint8_t TWELVE[] = {22, 5};
+#endif
+#endif

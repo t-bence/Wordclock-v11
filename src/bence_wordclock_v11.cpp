@@ -1,9 +1,14 @@
+// set language: ENGLISH or HUNGARIAN
+#define HUNGARIAN
+// set LED direction of the top row when viewing from the front: LEFT_TO_RIGHT or RIGHT_TO_LEFT
+#define LEFT_TO_RIGHT
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 #include <DS3231.h>
-#include <TimeLib.h>        // http://www.arduino.cc/playground/Code/Time
+#include <TimeLib.h>        // 
 #include <Timezone.h>       // https://github.com/JChristensen/Timezone
 
 // custom code
@@ -36,12 +41,6 @@ byte zero = 0x00; //workaround for issue #527
 int intHour = 0;
 int intMinute = 0;
 
-#define HUNGARIAN 0
-#define ENGLISH 1
-
-// set language
-#define LANGUAGE HUNGARIAN
-
 // colors
 #define colorButtonPin   2   // to adjust the color
 #define colorsDefined    15  // number of colors
@@ -62,7 +61,6 @@ unsigned long redrawTimer = 0;
 
 // set next color, save to EEPROM and force redraw
 void colorButtonPressed() {
-    // check when was the last press for debouncing
     if (millis() - colorTimer > 400UL) {
         Serial.println("+++ color Button Pressed +++");
         chosenColor = chosenColor + 1;
@@ -78,30 +76,19 @@ void colorButtonPressed() {
 
 
 void show(byte data[]) {
-    byte start = data[0];
-    byte len = data[1];
 
-    for (int i = 0; i <= len; i++) {
-        pixels.setPixelColor(start + i, colorOut);
-    }
+    pixels.fill(data[0], data[1]);
 }
 
-// this function turns all LEDs off
-void clearAll() {
-    for (int i = 0; i < NUMPIXELS; i++) {
-        pixels.setPixelColor(i, 0);
-    }
-}
+// this function shows the time
+void showTime(int hour, int min) {
 
-// this function shows the time in Hungarian
-void showTimeHun(int hour, int min) {
-
-    clearAll();
+    pixels.fill();
 
     bool showNext = false;
 
-    // set minutes
-    // a percek / negyed orak
+#ifdef HUNGARIAN
+
     if (min < 5) {
         show(MOST);
         show(ORA);
@@ -172,12 +159,15 @@ void showTimeHun(int hour, int min) {
         show(ORA);
         showNext = true;
     }
-    else {
+    else if (min <= 60) {
         show(OT_MULVA);
         show(PERC);
         show(MULVA);
         show(ORA);
         showNext = true;
+    }
+    else {
+        show(ERROR);
     }
 
     if (showNext) {
@@ -227,17 +217,8 @@ void showTimeHun(int hour, int min) {
             show(ERROR);
             break;
     }
-
-    pixels.show();
-}
-
-// this function displays the time in English
-void showTimeEng(int hour, int min) {
-
-    clearAll();
-
-    bool showNext = false;
-
+#endif
+#ifdef ENGLISH
     show(IT);
     show(IS);
 
@@ -292,11 +273,15 @@ void showTimeEng(int hour, int min) {
         show(TO);
         showNext = true;
     }
-    else {
+    else if (min <= 60) {
         show(FIVE_MIN);
         show(TO);
         showNext = true;
     }
+    else {
+        show(ERROR);
+    }
+    
 
     if (showNext) {
         hour = hour + 1;
@@ -344,13 +329,13 @@ void showTimeEng(int hour, int min) {
             show(ERROR);
             break;
     }
-
+#endif
     pixels.show();
 }
 
 void updateAndShowTime() {
   // Get the current UTC time from the RTC
-  utc = (time_t) rtc.getUnixTime(rtc.getTime());
+  utc = static_cast<time_t>(rtc.getUnixTime(rtc.getTime()));
   
   // Convert UTC time to local time
   local = hunTZ.toLocal(utc, &tcr);
@@ -369,12 +354,8 @@ void updateAndShowTime() {
   if (intHour == 0) { intHour = 12; }
   else if (intHour > 12) { intHour -= 12; }
 
-  // Show the time based on the selected language
-  if (LANGUAGE == HUNGARIAN) {
-    showTimeHun(intHour, intMinute);
-  } else {
-    showTimeEng(intHour, intMinute);
-  }
+
+    showTime(intHour, intMinute);
 }
 
 void setup() {
@@ -382,10 +363,8 @@ void setup() {
 
     Serial.println("Starting up...");
     Wire.begin();
-    // Serial.println("Wire has begun");
 
     rtc.begin();
-    // Serial.println("RTC has begun");
 
     pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
     attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
@@ -398,11 +377,11 @@ void setup() {
     colorOut = COLORS[chosenColor];
 
 
-    pixels.begin(); // This initializes the NeoPixel library.
+    pixels.begin();
     pixels.setBrightness(255); // 0-255
-    clearAll();
+    pixels.fill(); // equivalent to clearing
 
-    pixels.show();  // reset to no colors
+    pixels.show();
     Serial.println("NeoPixel has begun");
 
     redraw = true; // write time immediately
