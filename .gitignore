@@ -26,3 +26,4 @@ lib/DS3231/examples/chipKit/DS3231_UnixTime/DS3231_UnixTime.pde
 .pio/build/atmega328pb/firmware.hex
 .vscode
 .vscode/*
+.pio/build/project.checksum
