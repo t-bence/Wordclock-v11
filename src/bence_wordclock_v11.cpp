@@ -25,6 +25,7 @@
 #include <DS3231.h>
 #include <TimeLib.h>        // http://www.arduino.cc/playground/Code/Time
 #include <Timezone.h>       // https://github.com/JChristensen/Timezone
+#include <Colors.h>
 
 // include the words
 #include <WordclockWords.h>
@@ -58,37 +59,20 @@ int intMinute = 0;
 // nyelv beallitasa
 #define LANGUAGE HUNGARIAN
 
-// colours
-#define colourButtonPin   2   // to adjust the colour
-#define coloursDefined    15  // number of colours
-volatile byte chosenColour = 12; // the colour currently stored
+// colors
+#define colorButtonPin   2   // to adjust the color
+#define colorsDefined    15  // number of colors
+volatile byte chosenColor = 12; // the color currently stored
 
-// ezek RGB szinek
-uint32_t colours[] = {pixels.Color(127, 127, 0), // sarga
-                                pixels.Color(250, 250, 0),
-                                pixels.Color(127, 0, 127),
-                                pixels.Color(250, 0, 250), // pink
-                                pixels.Color(0, 127, 127), // cian
-                                pixels.Color(0, 250, 250), // cian
-                                pixels.Color(127, 0, 0), // piros
-                                pixels.Color(255, 0, 0), // piros
-                                pixels.Color(0, 127, 0),
-                                pixels.Color(0, 250, 0), // zold
-                                pixels.Color(0, 0, 127),
-                                pixels.Color(0, 0, 255), // kek
-                                pixels.Color(127, 127, 127), // halvany feher
-                                pixels.Color(250, 250, 250), // eros feher
-                                pixels.Color(250, 100, 0)}; // narancssarga
-
-//Set the colour globally
-volatile uint32_t colourOut = colours[chosenColour];
+//Set the color globally
+volatile uint32_t colorOut = COLORS[chosenColor];
 
 const int EEPROM_ADDR = 0;
 
 const unsigned long REDRAW_PERIOD = 30000;
 
 // to debounce the buttons
-volatile unsigned long colourTimer = 0;
+volatile unsigned long colorTimer = 0;
 volatile bool redraw = true;
 unsigned long redrawTimer = 0;
 
@@ -96,18 +80,18 @@ unsigned long redrawTimer = 0;
 
 
 
-void colourButtonPressed() {
+void colorButtonPressed() {
     // check when was the last press for debouncing
-    if (millis() - colourTimer > 400UL) {
-        Serial.println("+++ Colour Button Pressed +++");
-        chosenColour = chosenColour + 1;
-        if (chosenColour > (coloursDefined-1)) { chosenColour = 0; }
-        colourOut = colours[chosenColour];
+    if (millis() - colorTimer > 400UL) {
+        Serial.println("+++ color Button Pressed +++");
+        chosenColor = chosenColor + 1;
+        if (chosenColor > (colorsDefined-1)) { chosenColor = 0; }
+        colorOut = COLORS[chosenColor];
 
-        EEPROM.write(EEPROM_ADDR, chosenColour);
+        EEPROM.write(EEPROM_ADDR, chosenColor);
 
         redraw = true;
-        colourTimer = millis();
+        colorTimer = millis();
     }
 }
 
@@ -119,7 +103,7 @@ void show(byte data[]) {
     byte len = data[1];
 
     for (int i = 0; i <= len; i++) {
-        pixels.setPixelColor(start + i, colourOut);
+        pixels.setPixelColor(start + i, colorOut);
     }
 }
 
@@ -453,7 +437,6 @@ void writeTime() {
 }
 
 
-// =========================================================
 void setup() {
     Serial.begin(115200); // debugging only
 
@@ -464,15 +447,15 @@ void setup() {
     rtc.begin();
     // Serial.println("RTC has begun");
 
-    pinMode(colourButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
-    attachInterrupt(digitalPinToInterrupt(colourButtonPin), colourButtonPressed, RISING);
+    pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
+    attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
 
     // read from EEPROM.
-    chosenColour = EEPROM.read(EEPROM_ADDR);
-    if (chosenColour >= coloursDefined) { // if an error has occured
-      chosenColour = 0;
+    chosenColor = EEPROM.read(EEPROM_ADDR);
+    if (chosenColor >= colorsDefined) { // if an error has occured
+      chosenColor = 0;
     }
-    colourOut = colours[chosenColour];
+    colorOut = COLORS[chosenColor];
 
 
     pixels.begin(); // This initializes the NeoPixel library.
