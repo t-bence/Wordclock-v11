@@ -1,4 +1,4 @@
-uint8_t ERROR[] = {0, 50}; // show lots of LEDs on error
+uint8_t ERROR[] = {0, 0}; // show all LEDs on error
 
 #ifdef HUNGARIAN
 #ifdef LEFT_TO_RIGHT // if LED line starts from the left when viewed from the front

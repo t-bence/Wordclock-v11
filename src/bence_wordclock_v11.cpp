@@ -69,7 +69,7 @@ void show(byte data[])
 // this function shows the time
 void showTime(int hour, int min)
 {
-    pixels.fill();
+    pixels.fill(); // clear the strip
 
     bool showNext = false;
 
@@ -332,7 +332,7 @@ void loop() {
         Serial.print(localTime.hour); Serial.print('-'); Serial.println(localTime.minute);
 
         showTime(localTime.hour, localTime.minute);
-        
+
         redrawTimer = millis();
         redraw = false;
     }

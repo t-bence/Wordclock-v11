@@ -1,4 +1,6 @@
+.pio/
 .vscode/
+.pio/
 build/
 .pioenvs
 .piolibdeps
@@ -24,7 +26,5 @@ lib/DS3231/examples/chipKit/DS3231_UnixTime/DS3231_UnixTime.pde
 .pio/build/project.checksum
 .pio/build/atmega328pb/firmware.elf
 .pio/build/atmega328pb/firmware.hex
-.vscode
-.vscode/*
 .pio/build/project.checksum
 .pio/build/project.checksum
