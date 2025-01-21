@@ -61,9 +61,9 @@ void colorButtonPressed()
     }
 }
 
-void show(byte data[])
+void show(Word w)
 {
-    pixels.fill(chosenColor, data[0], data[1]);
+    pixels.fill(chosenColor, w.start, w.length);
 }
 
 // this function shows the time
@@ -171,25 +171,16 @@ void showTime(int hour, int min)
 
     if (showNext)
     {
-        hour = (hour % 12) + 1;
+        hour = (hour + 1) % 12;
     }
 
-    // set hours
-    switch (hour) {
-        case 1: show(EGY); break;
-        case 2: show(KETTO); break;
-        case 3: show(HAROM); break;
-        case 4: show(NEGY); break;
-        case 5: show(OT); break;
-        case 6: show(HAT); break;
-        case 7: show(HET); break;
-        case 8: show(NYOLC); break;
-        case 9: show(KILENC); break;
-        case 10: show(TIZ); break;
-        case 11: show(TIZENEGY1); show(TIZENEGY2); break;
-        case 12: show(TIZENKETTO); break;
-        default: show(ERROR); break;
+    show(HOURS[hour]);
+    if (hour == 11) 
+    {
+        show(HOURS[12]); // 11 consists of two word parts in Hungarian
+        // we need to show the other portion, too
     }
+
 #endif
 #ifdef ENGLISH
     show(IT);
@@ -270,25 +261,12 @@ void showTime(int hour, int min)
 
     if (showNext)
     {
-        hour = (hour % 12) + 1;
+        hour = (hour + 1) % 12;
     }
 
     // set hour
-    switch (hour) {
-        case 1: show(ONE); break;
-        case 2: show(TWO); break;
-        case 3: show(THREE); break;
-        case 4: show(FOUR); break;
-        case 5: show(FIVE); break;
-        case 6: show(SIX); break;
-        case 7: show(SEVEN); break;
-        case 8: show(EIGHT); break;
-        case 9: show(NINE); break;
-        case 10: show(TEN); break;
-        case 11: show(ELEVEN); break;
-        case 12: show(TWELVE); break;
-        default: show(ERROR); break;
-    }
+    show(HOURS[hour]);
+
 #endif
     pixels.show();
 }

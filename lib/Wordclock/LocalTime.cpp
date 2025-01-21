@@ -16,11 +16,8 @@ LocalTime getLocalTime(long utcTime)
     // add 2.5 minutes to "center" the range
     local += TWO_HALF_MINUTES;
 
-    // Extract the hour and minute from the local time
-    int intHour = hour(local);
-
-    // show hours between 1-12
-    intHour = (intHour % 12 == 0) ? 12 : intHour % 12;
+    // return hour between 0-11
+    int intHour = hour(local) % 12;
 
     return {intHour, minute(local)};
 }
