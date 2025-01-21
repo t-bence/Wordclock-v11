@@ -10,7 +10,6 @@
 *.dblite
 *.hex
 *.elf
-*.checksum
 lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
 lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
 lib/DS3231/examples/Arduino/DS3231_Serial_Easy/DS3231_Serial_Easy.ino
