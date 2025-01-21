@@ -19,3 +19,9 @@ Libraries used include:
 - NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
 - [Arduino Time](http://www.arduino.cc/playground/Code/Time)
 - [Timezone by JChristensen](https://github.com/JChristensen/Timezone)
+
+## Note to self
+
+Continue: remove Time library and DS3231 library
+Add Adafruits RTClib and use that together with the Timezone library.
+Hopefully that avoids conflicts with the Time.h header name.
