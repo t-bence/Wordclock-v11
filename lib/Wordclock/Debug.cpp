@@ -19,6 +19,7 @@ void sPrintDigits(int val)
 }
 
 //Function to print time with time zone
+/*
 void printTime(time_t t, char *tz)
 {
     sPrintI00(hour(t));
@@ -37,3 +38,4 @@ void printTime(time_t t, char *tz)
     Serial.println();
 }
 
+*/

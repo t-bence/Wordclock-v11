@@ -7,7 +7,7 @@
 #include <Wire.h>
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
-#include <DS3231.h>
+#include <RTClib.h>
 
 // custom code
 #include <WordclockWords.h>
@@ -16,7 +16,7 @@
 #include <Colors.h>
 
 // init RTC
-DS3231 rtc(SDA, SCL);
+RTC_DS3231 rtc;
 
 // neopixel setup
 #define PIN 12
@@ -279,7 +279,11 @@ void setup()
     Serial.println("Starting up...");
     Wire.begin();
 
-    rtc.begin();
+    if (!rtc.begin()) {
+        Serial.println("Couldn't find RTC");
+        Serial.flush();
+        while (1) delay(10);
+    }
 
     pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
     attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
@@ -305,7 +309,7 @@ void setup()
 void loop() {
     // Check if it's time to update and show the time
     if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw) {
-        auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
+        auto localTime = getLocalTime(rtc.now().unixtime());
 
         Serial.print(localTime.hour); Serial.print('-'); Serial.println(localTime.minute);
 

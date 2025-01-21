@@ -8,10 +8,10 @@ Timezone hunTZ(myDST, mySTD);
 LocalTime getLocalTime(long utcTime)
 {
     // Get the current UTC time from the RTC
-    time_t utc = static_cast<time_t>(utcTime);
+    // time_t utc = static_cast<time_t>(utcTime);
 
     // Convert UTC time to local time
-    time_t local = hunTZ.toLocal(utc);
+    time_t local = hunTZ.toLocal(utcTime);
 
     // add 2.5 minutes to "center" the range
     local += TWO_HALF_MINUTES;

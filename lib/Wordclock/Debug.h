@@ -13,6 +13,6 @@ void sPrintI00(int val);
 void sPrintDigits(int val);
 
 // Function to print time with time zone
-void printTime(time_t t, char *tz);
+// void printTime(time_t t, char *tz);
 
 #endif // DEBUG_H
