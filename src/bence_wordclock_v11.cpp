@@ -61,238 +61,58 @@ void colorButtonPressed()
     }
 }
 
-void show(byte data[])
+void show(Word w)
 {
-    pixels.fill(chosenColor, data[0], data[1]);
+    pixels.fill(chosenColor, w.start, w.length);
 }
 
-// this function shows the time
+void showWords(Word words[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        show(words[i]);
+    }
+}
+
 void showTime(int hour, int min)
 {
-    pixels.fill();
+    pixels.fill(); // clear the strip
 
-    bool showNext = false;
+    int index = min / 5;
+    if (index >= 12) index = 0; // handle edge case for 60 minutes
 
 #ifdef HUNGARIAN
 
-    if (min < 5)
+    showWords(TIME_WORDS[index], sizeof(TIME_WORDS[index]) / sizeof(Word));
+
+    if (index >= 3) // if it's past the first quarter
     {
-        show(MOST);
-        show(ORA);
-        show(VAN); // most, ora, van
-    }
-    else if (min < 10)
-    {
-        show(ORA);
-        show(MULT);
-        show(OT_MULT);
-        show(PERCCEL); // ora, mult, ot, perccel
-    }
-    else if (min < 15)
-    {
-        show(ORA);
-        show(MULT);
-        show(TIZ_MULT);
-        show(PERCCEL); // ora, mult, ot, perccel
-    }
-    else if (min < 20)
-    {
-        show(MOST);
-        show(NEGYED);
-        show(VAN); // most negyed van
-        showNext = true;
-    }
-    else if (min < 25)
-    {
-        show(NEGYED);
-        show(MULT);
-        show(OT_MULT);
-        show(PERCCEL);
-        showNext = true;
-    }
-    else if (min < 30)
-    {
-        show(OT_MULVA);
-        show(PERC);
-        show(MULVA);
-        show(FEL);
-        showNext = true;
-    }
-    else if (min < 35)
-    {
-        show(MOST);
-        show(FEL);
-        show(VAN);
-        showNext = true;
-    }
-    else if (min < 40)
-    {
-        show(FEL);
-        show(MULT);
-        show(OT_MULT);
-        show(PERCCEL);
-        showNext = true;
-    }
-    else if (min < 45)
-    {
-        show(FEL);
-        show(MULT);
-        show(TIZ_MULT);
-        show(PERCCEL);
-        showNext = true;
-    }
-    else if (min < 50)
-    {
-        show(MOST);
-        show(HAROMNEGYED);
-        show(VAN);
-        showNext = true;
-    }
-    else if (min < 55)
-    {
-        show(TIZ_MULVA);
-        show(PERC);
-        show(MULVA);
-        show(ORA);
-        showNext = true;
-    }
-    else if (min <= 60)
-    {
-        show(OT_MULVA);
-        show(PERC);
-        show(MULVA);
-        show(ORA);
-        showNext = true;
-    }
-    else
-    {
-        show(ERROR);
+        hour = (hour + 1) % 12;
     }
 
-    if (showNext)
+    show(HOURS[hour]);
+    if (hour == 11)
     {
-        hour = (hour % 12) + 1;
+        show(HOURS[12]); // 11 consists of two word parts in Hungarian
     }
 
-    // set hours
-    switch (hour) {
-        case 1: show(EGY); break;
-        case 2: show(KETTO); break;
-        case 3: show(HAROM); break;
-        case 4: show(NEGY); break;
-        case 5: show(OT); break;
-        case 6: show(HAT); break;
-        case 7: show(HET); break;
-        case 8: show(NYOLC); break;
-        case 9: show(KILENC); break;
-        case 10: show(TIZ); break;
-        case 11: show(TIZENEGY1); show(TIZENEGY2); break;
-        case 12: show(TIZENKETTO); break;
-        default: show(ERROR); break;
-    }
 #endif
 #ifdef ENGLISH
+
     show(IT);
     show(IS);
+    showWords(TIME_WORDS[index], sizeof(TIME_WORDS[index]) / sizeof(Word));
 
-    // set minutes
-    // a percek / negyed orak
-    if (min < 5)
+    if (index >= 7) // if it's past half
     {
-        show(OCLOCK);
-    }
-    else if (min < 10)
-    {
-        show(FIVE_MIN);
-        show(PAST); // ora, mult, ot, perccel
-    }
-    else if (min < 15)
-    {
-        show(TEN_MIN);
-        show(PAST);
-    }
-    else if (min < 20)
-    {
-        show(QUARTER);
-        show(PAST);
-    }
-    else if (min < 25)
-    {
-        show(TWENTY);
-        show(PAST);
-    }
-    else if (min < 30)
-    {
-        show(TWENTY);
-        show(FIVE_MIN);
-        show(PAST);
-    }
-    else if (min < 35)
-    {
-        show(HALF);
-        show(PAST);
-    }
-    else if (min < 40)
-    {
-        show(TWENTY);
-        show(FIVE_MIN); // five to
-        show(TO);
-        showNext = true;
-    }
-    else if (min < 45)
-    {
-        show(TWENTY);
-        show(TO);
-        showNext = true;
-    }
-    else if (min < 50)
-    {
-        show(QUARTER);
-        show(TO);
-        showNext = true;
-    }
-    else if (min < 55)
-    {
-        show(TEN_MIN);
-        show(TO);
-        showNext = true;
-    }
-    else if (min <= 60)
-    {
-        show(FIVE_MIN);
-        show(TO);
-        showNext = true;
-    }
-    else
-    {
-        show(ERROR);
+        hour = (hour + 1) % 12;
     }
 
-    if (showNext)
-    {
-        hour = (hour % 12) + 1;
-    }
+    show(HOURS[hour]);
 
-    // set hour
-    switch (hour) {
-        case 1: show(ONE); break;
-        case 2: show(TWO); break;
-        case 3: show(THREE); break;
-        case 4: show(FOUR); break;
-        case 5: show(FIVE); break;
-        case 6: show(SIX); break;
-        case 7: show(SEVEN); break;
-        case 8: show(EIGHT); break;
-        case 9: show(NINE); break;
-        case 10: show(TEN); break;
-        case 11: show(ELEVEN); break;
-        case 12: show(TWELVE); break;
-        default: show(ERROR); break;
-    }
 #endif
     pixels.show();
 }
-
 
 void setup()
 {
@@ -324,15 +144,19 @@ void setup()
     redraw = true; // write time immediately
 }
 
-void loop() {
+void loop()
+{
     // Check if it's time to update and show the time
-    if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw) {
+    if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw)
+    {
         auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
 
-        Serial.print(localTime.hour); Serial.print('-'); Serial.println(localTime.minute);
+        Serial.print(localTime.hour);
+        Serial.print('-');
+        Serial.println(localTime.minute);
 
         showTime(localTime.hour, localTime.minute);
-        
+
         redrawTimer = millis();
         redraw = false;
     }
