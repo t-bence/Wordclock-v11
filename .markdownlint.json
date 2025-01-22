@@ -1,5 +1,0 @@
-{
-    "markdownlint.lintWorkspaceGlobs": {
-        "exclude": "!**/lib/*"
-    }
-}
