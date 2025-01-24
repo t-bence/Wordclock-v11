@@ -2,6 +2,7 @@
 #include "unity.h"
 #include <Display.h>
 #include <Writer.h>
+#include <WordclockWords.h>
 
 #define HUNGARIAN
 #define LEFT_TO_RIGHT
@@ -27,10 +28,21 @@ public:
 
 void setUp(void) {
   // set stuff up here
+  initializeSegments();
 }
 
 void tearDown(void) {
   // clean stuff up here
+}
+
+// this function checks if the test display works
+void test_test_display(void) {
+    LightSegment seg = {0, 3};
+    TestDisplay testDisplay;
+
+    testDisplay.show(seg);
+    TEST_ASSERT_EQUAL_STRING("TIZ", testDisplay.getContent().c_str());
+
 }
 
 void midnight_test(void) {
@@ -44,6 +56,7 @@ void midnight_test(void) {
 
 int runUnityTests(void) {
   UNITY_BEGIN();
+  RUN_TEST(test_test_display);
   RUN_TEST(midnight_test);
   return UNITY_END();
 }

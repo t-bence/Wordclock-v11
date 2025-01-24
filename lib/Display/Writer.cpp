@@ -10,14 +10,12 @@ void Writer::showWords(LightSegment words[], int size)
     }
 }
 
-void Writer::showTime(int hour, int min)
+void Writer::showTime(int hour_, int min)
 {
     int index = min / 5;
     if (index >= 12) index = 0; // handle edge case for 60 minutes
 
-    display.show(HOURS[hour]);
-
-#ifdef HUNGARIAN
+    int hour = hour_ % 12;
 
     showWords(TIME_WORDS[index], sizeof(TIME_WORDS[index]) / sizeof(LightSegment));
 
@@ -32,8 +30,8 @@ void Writer::showTime(int hour, int min)
         display.show(HOURS[12]); // 11 consists of two word parts in Hungarian
     }
 
-#endif
-#ifdef ENGLISH
+
+/* FOR ENGLISH:
 
     display.show(IT);
     display.show(IS);
@@ -45,5 +43,5 @@ void Writer::showTime(int hour, int min)
 
     display.show(HOURS[hour]);
 
-#endif
+*/
 }

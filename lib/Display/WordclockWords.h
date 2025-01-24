@@ -13,7 +13,7 @@ extern LightSegment HOURS[];
 
 extern LightSegment* TIME_WORDS[];
 
-#ifdef HUNGARIAN
+void initializeSegments();
 
 extern LightSegment MOST;
 extern LightSegment ORA;
@@ -30,21 +30,5 @@ extern LightSegment MULVA;
 extern LightSegment FEL;
 extern LightSegment HAROMNEGYED;
 
-#endif
-
-#ifdef ENGLISH
-
-extern LightSegment IT;
-extern LightSegment IS;
-extern LightSegment QUARTER;
-extern LightSegment TWENTY;
-extern LightSegment FIVE_MIN;
-extern LightSegment HALF;
-extern LightSegment TEN_MIN;
-extern LightSegment TO;
-extern LightSegment PAST;
-extern LightSegment OCLOCK;
-
-#endif
 
 #endif // WORDCLOCKWORDS_H

@@ -74,6 +74,8 @@ Writer writer(neoPixelDisplay);
 
 void setup()
 {
+    initializeSegments();
+
     Serial.begin(115200); // debugging only
 
     Serial.println("Starting up...");
