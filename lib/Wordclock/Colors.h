@@ -1,3 +1,6 @@
+#ifndef COLORS_H
+#define COLORS_H
+
 #include <Adafruit_NeoPixel.h>
 
 uint32_t COLORS[] = {
@@ -17,3 +20,5 @@ uint32_t COLORS[] = {
     Adafruit_NeoPixel::Color(250, 250, 250), // bright white
     Adafruit_NeoPixel::Color(250, 100, 0)   // orange
 };
+
+#endif
