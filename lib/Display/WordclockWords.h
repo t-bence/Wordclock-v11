@@ -1,6 +1,8 @@
 #ifndef WORDCLOCKWORDS_H
 #define WORDCLOCKWORDS_H
 
+#define WORD_LENGTH 4
+
 // represents a lighted-up portion of a strip
 struct LightSegment
 {

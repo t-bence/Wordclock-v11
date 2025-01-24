@@ -1,4 +1,5 @@
 #include <string>
+#include <algorithm>
 #include "unity.h"
 #include <Display.h>
 #include <Writer.h>
@@ -18,6 +19,7 @@ public:
             content.append(" ");
         }
         std::string addition = LED_STRIP.substr(seg.start, seg.length);
+        // std::reverse(addition.begin(), addition.end()); // need to reverse the string
         content.append(addition);
     }
 
@@ -54,10 +56,20 @@ void midnight_test(void) {
     TEST_ASSERT_EQUAL_STRING("MOST TIZENKETTO ORA VAN", testDisplay.getContent().c_str());
 }
 
+void half_past_four_test(void) {
+    TestDisplay testDisplay;
+    Writer writer(testDisplay);
+
+    writer.showTime(16, 30);
+
+    TEST_ASSERT_EQUAL_STRING("MOST FEL OT VAN", testDisplay.getContent().c_str());
+}
+
 int runUnityTests(void) {
   UNITY_BEGIN();
   RUN_TEST(test_test_display);
   RUN_TEST(midnight_test);
+  RUN_TEST(half_past_four_test);
   return UNITY_END();
 }
 

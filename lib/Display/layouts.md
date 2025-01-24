@@ -2,6 +2,8 @@
 
 This file contains information on possible different layouts. Currently, the clock only supports Hungarian in a left-to-right layout.
 
+**NOTE: You have to increase the length by one! It has been done in the valid code but not here!**
+
 ```
 #include <WordclockWords.h>
 

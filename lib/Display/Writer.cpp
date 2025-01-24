@@ -6,7 +6,11 @@ void Writer::showWords(LightSegment words[], int size)
 {
     for (int i = 0; i < size; i++)
     {
-        display.show(words[i]);
+        if (words[i].start >= 0) {
+            // a start of -1 indicates a NULL word
+            display.show(words[i]);
+        }
+        
     }
 }
 
@@ -17,7 +21,7 @@ void Writer::showTime(int hour_, int min)
 
     int hour = hour_ % 12;
 
-    showWords(TIME_WORDS[index], sizeof(TIME_WORDS[index]) / sizeof(LightSegment));
+    showWords(TIME_WORDS[index], WORD_LENGTH);
 
     if (index >= 3) // if it's past the first quarter
     {
