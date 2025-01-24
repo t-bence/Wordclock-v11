@@ -13,6 +13,7 @@
 #include <LocalTime.h>
 #include <Debug.h>
 #include <Colors.h>
+#include <Writer.h>
 #include <Display.h>
 
 // init RTC
@@ -61,12 +62,15 @@ void colorButtonPressed()
     }
 }
 
-void show(LightSegment w)
-{
-    pixels.fill(chosenColor, w.start, w.length);
-}
+class NeoPixelDisplay : public Display {
+public:
+    void show(LightSegment w) override {
+        pixels.fill(chosenColor, w.start, w.length);
+    }
+};
 
-Display display(show);
+NeoPixelDisplay neoPixelDisplay;
+Writer writer(neoPixelDisplay);
 
 void setup()
 {
@@ -110,7 +114,7 @@ void loop()
         Serial.println(localTime.minute);
 
         pixels.clear();
-        display.showTime(localTime.hour, localTime.minute);
+        writer.showTime(localTime.hour, localTime.minute);
         pixels.show(); // actual displaying
 
         redrawTimer = millis();

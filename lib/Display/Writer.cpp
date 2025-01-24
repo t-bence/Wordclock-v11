@@ -1,19 +1,21 @@
-#include <Display.h>
+#include <Writer.h>
 
-Display::Display(ShowFunction showFunc) : show(showFunc) {}
+Writer::Writer(Display& display) : display(display) {}
 
-void Display::showWords(LightSegment words[], int size)
+void Writer::showWords(LightSegment words[], int size)
 {
     for (int i = 0; i < size; i++)
     {
-        show(words[i]);
+        display.show(words[i]);
     }
 }
 
-void Display::showTime(int hour, int min)
+void Writer::showTime(int hour, int min)
 {
     int index = min / 5;
     if (index >= 12) index = 0; // handle edge case for 60 minutes
+
+    display.show(HOURS[hour]);
 
 #ifdef HUNGARIAN
 
@@ -24,25 +26,24 @@ void Display::showTime(int hour, int min)
         hour = (hour + 1) % 12;
     }
 
-    show(HOURS[hour]);
+    display.show(HOURS[hour]);
     if (hour == 11)
     {
-        show(HOURS[12]); // 11 consists of two word parts in Hungarian
+        display.show(HOURS[12]); // 11 consists of two word parts in Hungarian
     }
 
 #endif
 #ifdef ENGLISH
 
-    show(IT);
-    show(IS);
-    showWords(TIME_WORDS[index], sizeof(TIME_WORDS[index]) / sizeof(LightSegment));
+    display.show(IT);
+    display.show(IS);
 
     if (index >= 7) // if it's past half
     {
         hour = (hour + 1) % 12;
     }
 
-    show(HOURS[hour]);
+    display.show(HOURS[hour]);
 
 #endif
 }
