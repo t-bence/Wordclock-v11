@@ -21,4 +21,6 @@ uint32_t COLORS[] = {
     Adafruit_NeoPixel::Color(250, 100, 0)   // orange
 };
 
+#define NUMBER_OF_COLORS 15
+
 #endif

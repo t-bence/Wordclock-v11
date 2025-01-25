@@ -38,6 +38,10 @@ public:
         content.append(addition);
     }
 
+    void setNextColor() {}
+    void clear() {}
+    void show() {}
+
     const std::string getContent() const {
         return content;
     }
@@ -66,7 +70,7 @@ void midnight_test(void) {
     TestDisplay testDisplay;
     Writer writer(testDisplay);
 
-    writer.showTime(12, 0);
+    writer.updateTime(60 * (12 * 60));
 
     TEST_ASSERT_EQUAL_STRING("MOST ORA VAN TIZENKETTO", testDisplay.getContent().c_str());
 }
@@ -75,7 +79,7 @@ void half_past_four_test(void) {
     TestDisplay testDisplay;
     Writer writer(testDisplay);
 
-    writer.showTime(16, 30);
+    writer.updateTime(60 * (30 + 60 * 4));
 
     TEST_ASSERT_EQUAL_STRING("MOST FEL VAN OT", testDisplay.getContent().c_str());
 }

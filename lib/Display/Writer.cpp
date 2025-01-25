@@ -2,6 +2,28 @@
 
 Writer::Writer(Display& display) : display(display) {}
 
+const unsigned long TWOHALF_MINUTES = 150;
+
+/*
+This method gets the current time in seconds,
+then decides if it has to update the time, and if so,
+it calls the showTime function. */
+void Writer::updateTime(unsigned long newSeconds) {
+    const int REDRAW_INTERVAL = 10;
+    if (newSeconds - seconds > REDRAW_INTERVAL) {
+        redraw();
+    }
+    seconds = newSeconds;
+        
+}
+
+void Writer::redraw() {
+    display.clear();
+    showTime();
+    display.show();
+
+}
+
 void Writer::showWords(LightSegment words[], int size)
 {
     for (int i = 0; i < size; i++)
@@ -16,12 +38,32 @@ void Writer::showWords(LightSegment words[], int size)
     }
 }
 
-void Writer::showTime(int hour_, int min)
+
+// return the hour between 0-11
+int Writer::getHour(unsigned long offset = 0U) {
+    int totalMinutes = (seconds + offset) / 60;
+    int totalHours = totalMinutes / 60;
+    return totalHours % 12;
+}
+
+// return minute between 0-59
+int Writer::getMinute(unsigned long offset = 0U) {
+    int totalMinutes = (seconds + offset) / 60;
+    return totalMinutes % 60;
+}
+
+void Writer::showTime()
 {
+
+    /*
+    When displaying the time, we add 2.5 minutes, so that we display noon
+    from 11:57:30 to 12:02:30, so centered around noon.
+    */
+    int min = getMinute(TWOHALF_MINUTES);
+    int hour = getHour(TWOHALF_MINUTES);
+
     int index = min / 5;
     if (index >= 12) index = 0; // handle edge case for 60 minutes
-
-    int hour = hour_ % 12;
 
     showWords(TIME_WORDS[index], WORD_LENGTH);
 
