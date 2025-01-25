@@ -17,9 +17,6 @@ LocalTime getLocalTime(long utcTime)
     // we should display noon between 11:57:30 and 12:02:30 (roughly)
     local += TWO_HALF_MINUTES;
 
-    // Extract the hour and minute from the local time
-    int intHour = hour(local);
-
     // show hours between 0-11
     return {hour(local) % 12, minute(local)};
 }
