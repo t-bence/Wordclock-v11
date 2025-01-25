@@ -2,8 +2,12 @@
 
 const int EEPROM_ADDR = 0;
 
-NeoPixelDisplay::NeoPixelDisplay(Adafruit_NeoPixel& pixels)
-        : pixels(pixels) {
+NeoPixelDisplay::NeoPixelDisplay(uint8_t pin) {
+
+    const uint16_t NUMPIXELS = 110;
+    pixels = Adafruit_NeoPixel(
+        NUMPIXELS, pin, NEO_GRB + NEO_KHZ800);
+
 
     // read from EEPROM.
     colorId = EEPROM.read(EEPROM_ADDR);
@@ -17,7 +21,7 @@ NeoPixelDisplay::NeoPixelDisplay(Adafruit_NeoPixel& pixels)
     pixels.clear();
 
     pixels.show();
-    Serial.println("NeoPixel has begun");
+    Serial.println("Display started");
 }
 
 void NeoPixelDisplay::show(LightSegment w) {

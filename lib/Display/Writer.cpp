@@ -1,6 +1,8 @@
 #include <Writer.h>
 
-Writer::Writer(Display& display) : display(display) {}
+Writer::Writer(Display& display) : display(display) {
+    initializeSegments();
+}
 
 const unsigned long TWOHALF_MINUTES = 150;
 
