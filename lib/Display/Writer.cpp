@@ -10,10 +10,10 @@ then decides if it has to update the time, and if so,
 it calls the showTime function. */
 void Writer::updateTime(unsigned long newSeconds) {
     const int REDRAW_INTERVAL = 10;
-    if (newSeconds - seconds > REDRAW_INTERVAL) {
+    if ((newSeconds - seconds) > REDRAW_INTERVAL) {
+        seconds = newSeconds;
         redraw();
     }
-    seconds = newSeconds;
         
 }
 
