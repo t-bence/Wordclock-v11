@@ -1,8 +1,3 @@
-// set language: ENGLISH or HUNGARIAN
-#define HUNGARIAN
-// set LED direction of the top row when viewing from the front: LEFT_TO_RIGHT or RIGHT_TO_LEFT
-#define LEFT_TO_RIGHT
-
 #include <Arduino.h>
 #include <Wire.h>
 #include <EEPROM.h>

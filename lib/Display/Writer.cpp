@@ -6,8 +6,10 @@ void Writer::showWords(LightSegment words[], int size)
 {
     for (int i = 0; i < size; i++)
     {
-        if (words[i].start >= 0) {
-            // a start of -1 indicates a NULL word
+        if (words[i] == EMPTY) {
+            continue; // EMPTY is a filling word that must not be displayed
+        }
+        else {
             display.show(words[i]);
         }
         

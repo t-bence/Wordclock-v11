@@ -1,7 +1,7 @@
 #include <WordclockWords.h>
 
 LightSegment ERROR = {0, 0};
-LightSegment NULL = {-1, -1};
+LightSegment EMPTY = {-1, -1};
 
 LightSegment HOURS[13];
 
@@ -56,16 +56,16 @@ void initializeSegments() {
     HOURS[12] = {49, 3};   // 11 (second part)
 
 
-    TIME_WORDS[0] = new LightSegment[4]{MOST, ORA, VAN, NULL};
+    TIME_WORDS[0] = new LightSegment[4]{MOST, ORA, VAN, EMPTY};
     TIME_WORDS[1] = new LightSegment[4]{ORA, MULT, OT_MULT, PERCCEL};
     TIME_WORDS[2] = new LightSegment[4]{ORA, MULT, TIZ_MULT, PERCCEL};
-    TIME_WORDS[3] = new LightSegment[4]{MOST, NEGYED, VAN, NULL};
+    TIME_WORDS[3] = new LightSegment[4]{MOST, NEGYED, VAN, EMPTY};
     TIME_WORDS[4] = new LightSegment[4]{NEGYED, MULT, OT_MULT, PERCCEL};
     TIME_WORDS[5] = new LightSegment[4]{OT_MULVA, PERC, MULVA, FEL};
-    TIME_WORDS[6] = new LightSegment[4]{MOST, FEL, VAN, NULL};
+    TIME_WORDS[6] = new LightSegment[4]{MOST, FEL, VAN, EMPTY};
     TIME_WORDS[7] = new LightSegment[4]{FEL, MULT, OT_MULT, PERCCEL};
     TIME_WORDS[8] = new LightSegment[4]{FEL, MULT, TIZ_MULT, PERCCEL};
-    TIME_WORDS[9] = new LightSegment[4]{MOST, HAROMNEGYED, VAN, NULL};
+    TIME_WORDS[9] = new LightSegment[4]{MOST, HAROMNEGYED, VAN, EMPTY};
     TIME_WORDS[10] = new LightSegment[4]{TIZ_MULVA, PERC, MULVA, ORA};
     TIME_WORDS[11] = new LightSegment[4]{OT_MULVA, PERC, MULVA, ORA};
 }

@@ -7,9 +7,14 @@
 struct LightSegment
 {
     int start, length;
+
+    bool operator==(const LightSegment& other) const {
+        return start == other.start && length == other.length;
+    }
 };
 
 extern LightSegment ERROR;
+extern LightSegment EMPTY;
 
 extern LightSegment HOURS[];
 
