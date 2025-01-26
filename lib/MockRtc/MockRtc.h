@@ -9,7 +9,7 @@
 #define SDA 0
 #define SCL 0
 
-unsigned long getLocalTime(long input);
+unsigned long getLocalTime(unsigned long input);
 
 void pinMode(int number, int mode);
 
@@ -24,7 +24,7 @@ class DS3231
 	public:
 		DS3231(int data_pin, int sclk_pin);
         void begin();
-        long getUnixTime(unsigned long t);
+        unsigned long getUnixTime(unsigned long t);
         unsigned long getTime();
 };
 

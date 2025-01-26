@@ -21,7 +21,7 @@ DS3231::DS3231(int data_pin, int sclk_pin) {}
 
 void DS3231::begin() {}
 
-long DS3231::getUnixTime(unsigned long input) {
+unsigned long DS3231::getUnixTime(unsigned long input) {
     return input;
 };
 

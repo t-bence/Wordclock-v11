@@ -1,10 +1,13 @@
 // files for MCU
-#include <Arduino.h>
-#include <DS3231.h>
-#include <LocalTime.h>
-#include <NeoPixelDisplay.h>
-// #include "ConsoleDisplay.h"
-// #include "MockRtc.h"
+#ifdef MCU
+    #include <Arduino.h>
+    #include <DS3231.h>
+    #include <LocalTime.h>
+    #include <NeoPixelDisplay.h>
+#else
+    #include "ConsoleDisplay.h"
+    #include "MockRtc.h"
+#endif
 
 #include <Writer.h>
 
