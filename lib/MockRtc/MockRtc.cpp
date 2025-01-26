@@ -36,5 +36,7 @@ unsigned long DS3231::getTime() {
     localtime_r(&t, &local_tm);  // Thread-safe version of localtime()
 
     // Compute seconds since midnight
-    return local_tm.tm_hour * 3600 + local_tm.tm_min * 60 + local_tm.tm_sec;
+    unsigned long time = local_tm.tm_hour * 3600 + local_tm.tm_min * 60 + local_tm.tm_sec;
+    // std::cout << time << std::endl;
+    return time;
 }

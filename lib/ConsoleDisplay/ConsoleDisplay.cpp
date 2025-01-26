@@ -27,9 +27,11 @@ void ConsoleDisplay::show(LightSegment seg) {
 }
 
 void ConsoleDisplay::setNextColor() {}
-void ConsoleDisplay::clear() {}
+void ConsoleDisplay::clear() {
+    content = "";
+}
 void ConsoleDisplay::show() {
-    std::cout << content;
+    std::cout << content << std::endl;
 }
 
 const std::string ConsoleDisplay::getContent() {
