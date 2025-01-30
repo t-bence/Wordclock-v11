@@ -14,7 +14,7 @@ public:
     void show() override;
 
 private:
-    Adafruit_NeoPixel& pixels;
+    Adafruit_NeoPixel* pixels;
     volatile int colorId;
 };
 
