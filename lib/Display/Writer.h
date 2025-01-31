@@ -2,6 +2,7 @@
 #define WRITER_H
 
 #include <Display.h>
+#include <Debug.h>
 #include <WordclockWords.h>
 
 class Writer {

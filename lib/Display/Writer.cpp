@@ -11,6 +11,7 @@ This method gets the current time in seconds,
 then decides if it has to update the time, and if so,
 it calls the showTime function. */
 void Writer::updateTime(unsigned long newSeconds) {
+    PRINTLN("Updating time");
     const int REDRAW_INTERVAL = 10;
     if ((newSeconds - seconds) > REDRAW_INTERVAL) {
         seconds = newSeconds;
@@ -20,6 +21,7 @@ void Writer::updateTime(unsigned long newSeconds) {
 }
 
 void Writer::redraw() {
+    PRINTLN("Redrawing");
     display.clear();
     showTime();
     display.show();
@@ -63,6 +65,9 @@ void Writer::showTime()
     */
     int min = getMinute(TWOHALF_MINUTES);
     int hour = getHour(TWOHALF_MINUTES);
+
+    PRINT("Hour: "); PRINTLN(hour);
+    PRINT("Minute: "); PRINTLN(min);
 
     int index = min / 5;
     if (index >= 12) index = 0; // handle edge case for 60 minutes

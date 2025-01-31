@@ -10,6 +10,7 @@
 #endif
 
 #include <Writer.h>
+#include <Debug.h>
 
 
 // init RTC
@@ -45,6 +46,8 @@ void colorButtonPressed()
 
 int main() {
 
+    SERIAL_BEGIN(9600);
+
     rtc.begin();
 
     pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
@@ -52,6 +55,7 @@ int main() {
 
     while (true) {
         auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
+        PRINTLN(localTime);
         writer.updateTime(localTime);
     }
 }
