@@ -1,20 +1,20 @@
 #include <Writer.h>
 
-Writer::Writer(Display& display) : display(display) {
+Writer::Writer(Display* d) : display(d) {
     initializeSegments();
+    last = ClockTime {0, 0, 0};
 }
 
-const unsigned long TWOHALF_MINUTES = 150;
+const int REDRAW_INTERVAL = 10;
 
 /*
 This method gets the current time in seconds,
 then decides if it has to update the time, and if so,
 it calls the showTime function. */
-void Writer::updateTime(unsigned long newSeconds) {
-    PRINTLN("Updating time");
-    const int REDRAW_INTERVAL = 10;
-    if ((newSeconds - seconds) > REDRAW_INTERVAL) {
-        seconds = newSeconds;
+void Writer::updateTime(ClockTime time) {
+    unsigned long now = time.getSeconds();
+    if (((now - last.getSeconds()) > REDRAW_INTERVAL) or (now < last.getSeconds())) {
+        last = time;
         redraw();
     }
         
@@ -22,9 +22,9 @@ void Writer::updateTime(unsigned long newSeconds) {
 
 void Writer::redraw() {
     PRINTLN("Redrawing");
-    display.clear();
+    display->clear();
     showTime();
-    display.show();
+    display->show();
 
 }
 
@@ -32,28 +32,15 @@ void Writer::showWords(LightSegment words[], int size)
 {
     for (int i = 0; i < size; i++)
     {
+        PRINT("Writing "); PRINTLN(words[i].start);
         if (words[i] == EMPTY) {
             continue; // EMPTY is a filling word that must not be displayed
         }
         else {
-            display.show(words[i]);
+            display->show(words[i]);
         }
         
     }
-}
-
-
-// return the hour between 0-11
-int Writer::getHour(unsigned long offset = 0U) {
-    int totalMinutes = (seconds + offset) / 60;
-    int totalHours = totalMinutes / 60;
-    return totalHours % 12;
-}
-
-// return minute between 0-59
-int Writer::getMinute(unsigned long offset = 0U) {
-    int totalMinutes = (seconds + offset) / 60;
-    return totalMinutes % 60;
 }
 
 void Writer::showTime()
@@ -63,8 +50,8 @@ void Writer::showTime()
     When displaying the time, we add 2.5 minutes, so that we display noon
     from 11:57:30 to 12:02:30, so centered around noon.
     */
-    int min = getMinute(TWOHALF_MINUTES);
-    int hour = getHour(TWOHALF_MINUTES);
+    int hour = last.hour % 12;
+    int min = last.minute % 60;
 
     PRINT("Hour: "); PRINTLN(hour);
     PRINT("Minute: "); PRINTLN(min);
@@ -79,10 +66,10 @@ void Writer::showTime()
         hour = (hour + 1) % 12;
     }
 
-    display.show(HOURS[hour]);
+    display->show(HOURS[hour]);
     if (hour == 11)
     {
-        display.show(HOURS[12]); // 11 consists of two word parts in Hungarian
+        display->show(HOURS[12]); // 11 consists of two word parts in Hungarian
     }
 
 

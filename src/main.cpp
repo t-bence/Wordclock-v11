@@ -1,8 +1,8 @@
-// files for MCU
 #ifdef MCU
     #include <Arduino.h>
     #include <DS3231.h>
     #include <LocalTime.h>
+    #include <Display.h>
     #include <NeoPixelDisplay.h>
 #else
     #include "ConsoleDisplay.h"
@@ -11,7 +11,6 @@
 
 #include <Writer.h>
 #include <Debug.h>
-
 
 // init RTC
 DS3231 rtc(SDA, SCL);
@@ -22,40 +21,67 @@ const int LED_PIN = 12;
 // colors
 #define colorButtonPin 2
 
+const unsigned long TWOHALF_MINUTES = 150;
+
 // to debounce the buttons
 volatile unsigned long colorTimer = 0;
 
 #ifdef MCU
-NeoPixelDisplay display(LED_PIN);
+    Adafruit_NeoPixel pixels(110, LED_PIN);
+
+    NeoPixelDisplay display(&pixels);
 #else
-ConsoleDisplay display;
+    ConsoleDisplay display;
 #endif
 
-Writer writer(display);
+Writer writer(&display);
+
 
 // set next color, save to EEPROM and force redraw
 void colorButtonPressed()
 {
     if (millis() - colorTimer > 400UL)
     {
-        display.setNextColor();
-        writer.redraw();
+        //display->setNextColor();
+        //writer.redraw();
         colorTimer = millis();
     }
 }
 
-int main() {
+void setup() {
 
-    SERIAL_BEGIN(9600);
+    #ifdef DEBUG
+    Serial.begin(9600);
+    pixels.begin();
+    #endif
+
+    PRINTLN("Starting...");
 
     rtc.begin();
+    PRINTLN("RTC initialized.");
 
     pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
     attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
+    PRINTLN("Button interrupt attached.");
 
+    PRINTLN("Pixels started.");
+
+}
+
+void loop() {
+    auto localTime = getLocalTime(
+        rtc.getUnixTime(rtc.getTime()),
+        TWOHALF_MINUTES
+    );
+    // PRINTLN(localTime);
+    writer.updateTime(localTime);
+}
+
+#ifdef NATIVE
+int main() {
+    setup();
     while (true) {
-        auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
-        PRINTLN(localTime);
-        writer.updateTime(localTime);
+        loop();
     }
 }
+#endif

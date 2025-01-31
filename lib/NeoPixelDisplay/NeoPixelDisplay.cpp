@@ -1,24 +1,22 @@
 #include <NeoPixelDisplay.h>
 
 const int EEPROM_ADDR = 0;
+const int NUMPIXELS = 110;
 
-NeoPixelDisplay::NeoPixelDisplay(uint8_t pin) {
-    const uint16_t NUMPIXELS = 110;
-    pixels = new Adafruit_NeoPixel(NUMPIXELS, pin, NEO_GRB + NEO_KHZ800); // Allocate dynamically
+NeoPixelDisplay::NeoPixelDisplay(Adafruit_NeoPixel* p) : pixels(p) {
 
     // read from EEPROM.
-    colorId = EEPROM.read(EEPROM_ADDR);
+    //colorId = EEPROM.read(EEPROM_ADDR);
+    colorId = 0;
     if (colorId >= NUMBER_OF_COLORS)
     { // if an error has occured
         colorId = 0;
     }
+}
 
-    pixels->begin();
-    pixels->setBrightness(255); // 0-255
-    pixels->clear();
-
-    pixels->show();
-    Serial.println("Display started");
+NeoPixelDisplay::~NeoPixelDisplay() {
+    Serial.println("Deleting Adafruit_NeoPixel instance...");
+    delete pixels;
 }
 
 void NeoPixelDisplay::show(LightSegment w) {
@@ -30,7 +28,7 @@ void NeoPixelDisplay::setNextColor() {
     colorId++;
     colorId = colorId % NUMBER_OF_COLORS;
 
-    EEPROM.write(EEPROM_ADDR, colorId);
+    // EEPROM.write(EEPROM_ADDR, colorId);
 }
 
 void NeoPixelDisplay::clear() {

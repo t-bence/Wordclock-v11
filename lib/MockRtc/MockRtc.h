@@ -5,12 +5,14 @@
 #include <chrono>
 #include <ctime>
 
+#include <ClockTime.h>
+
 #define INPUT 0
 #define RISING 3
 #define SDA 0
 #define SCL 0
 
-unsigned long getLocalTime(unsigned long input);
+ClockTime getLocalTime(std::time_t t, int offset = 0);
 
 void pinMode(int number, int mode);
 
@@ -25,8 +27,8 @@ class DS3231
 	public:
 		DS3231(int data_pin, int sclk_pin);
         void begin();
-        unsigned long getUnixTime(unsigned long t);
-        unsigned long getTime();
+        std::time_t getUnixTime(std::time_t t);
+        std::time_t getTime();
 };
 
 #endif // MOCKRTC_H

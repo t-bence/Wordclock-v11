@@ -3,12 +3,13 @@
 
 #include <TimeLib.h>
 #include <Timezone.h>
+#include <ClockTime.h>
 
 // Declare the time change rules and timezone as extern
 extern TimeChangeRule myDST;
 extern TimeChangeRule mySTD;
 extern Timezone hunTZ;
 
-unsigned long getLocalTime(long utcTime);
+ClockTime getLocalTime(long utcTime, int offset = 0);
 
 #endif // LOCALTIME_H

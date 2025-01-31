@@ -2,12 +2,13 @@
 #define NEOPIXELDISPLAY_H
 
 #include <Display.h>
-#include <EEPROM.h>
+//#include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 
 class NeoPixelDisplay : public Display {
 public:
-    NeoPixelDisplay(uint8_t pin);
+    NeoPixelDisplay(Adafruit_NeoPixel* p);
+    ~NeoPixelDisplay(); // Destructor to clean up
     void show(LightSegment w) override;
     void setNextColor() override;
     void clear() override;

@@ -1,7 +1,7 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#ifdef MCU
+#ifdef DEBUG
     #include <Arduino.h>
     #define SERIAL_BEGIN(...) Serial.begin(__VA_ARGS__)
     #define PRINT(...)    Serial.print(__VA_ARGS__)

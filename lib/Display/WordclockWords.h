@@ -1,17 +1,9 @@
 #ifndef WORDCLOCKWORDS_H
 #define WORDCLOCKWORDS_H
 
+#include <Display.h>
+
 #define WORD_LENGTH 4
-
-// represents a lighted-up portion of a strip
-struct LightSegment
-{
-    int start, length;
-
-    bool operator==(const LightSegment& other) const {
-        return start == other.start && length == other.length;
-    }
-};
 
 extern LightSegment ERROR;
 extern LightSegment EMPTY;

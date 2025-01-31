@@ -4,19 +4,18 @@
 #include <Display.h>
 #include <Debug.h>
 #include <WordclockWords.h>
+#include <ClockTime.h>
 
 class Writer {
 public:
-    Writer(Display& display);
-    void updateTime(unsigned long newSeconds);
+    Writer(Display* display);
+    void updateTime(ClockTime time);
     void redraw();
 private:
-    int getHour(unsigned long offset);
-    int getMinute(unsigned long offset);
     void showWords(LightSegment words[], int size);
     void showTime();
-    Display& display;
-    unsigned long seconds;
+    Display* display;
+    ClockTime last;
 };
 
 #endif // WRITER_H
