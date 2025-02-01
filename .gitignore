@@ -15,3 +15,4 @@ build/
 examples/
 .vscode
 .vscode/*
+.DS_Store
