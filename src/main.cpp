@@ -42,8 +42,8 @@ void colorButtonPressed()
 {
     if (millis() - colorTimer > 400UL)
     {
-        //display->setNextColor();
-        //writer.redraw();
+        display.setNextColor();
+        writer.redraw();
         colorTimer = millis();
     }
 }
