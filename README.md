@@ -8,6 +8,10 @@ The code is also my device to learn C++ and improve my programming skills. Curre
 
 It used to be possible to configure the clock to display English or Hungarian lettering, with another option to specify whether the LED strand starts on the left or the right (when viewed from the front). This is currently not possible, but the required data is available in the [layouts.md](lib/Display/layouts.md) file.
 
+## Usage
+
+To run in debug mode, which means writing everything to Serial, you should change the `DEBUG=0` to `DEBUG=1` in `platformio.ini`.
+
 ## Libraries
 
 Some of the used libraries are:

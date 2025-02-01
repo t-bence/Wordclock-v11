@@ -1,11 +1,10 @@
 #include <MockRtc.h>
 
 ClockTime getLocalTime(std::time_t t, int offset) {
+    t += offset;
     // Convert to local time
     std::tm local_tm;
     localtime_r(&t, &local_tm);  // Thread-safe version of localtime()
-
-    //local_tm += offset;
 
     // Compute seconds since midnight
     return ClockTime {local_tm.tm_hour, local_tm.tm_min, local_tm.tm_sec};

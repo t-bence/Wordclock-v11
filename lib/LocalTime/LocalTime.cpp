@@ -5,7 +5,7 @@ TimeChangeRule myDST = {"CEST", Last, Sun, Mar, 2, 120}; // Daylight time = UTC 
 TimeChangeRule mySTD = {"CET", Last, Sun, Oct, 3, 60};   // Standard time = UTC + 1 hours
 Timezone hunTZ(myDST, mySTD);
 
-ClockTime getLocalTime(long utcTime, int offset = 0)
+ClockTime getLocalTime(long utcTime, int offset)
 {
     // Get the current UTC time from the RTC
     time_t utc = static_cast<time_t>(utcTime);
