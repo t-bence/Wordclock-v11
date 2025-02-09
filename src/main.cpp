@@ -1,120 +1,88 @@
-#include <Arduino.h>
-#include <Wire.h>
-#include <EEPROM.h>
-#include <Adafruit_NeoPixel.h>
-#include <DS3231.h>
+#ifdef MCU
+    #include <Arduino.h>
+    #include <DS3231.h>
+    #include <LocalTime.h>
+    #include <Display.h>
+    #include <NeoPixelDisplay.h>
+#else
+    #include "ConsoleDisplay.h"
+    #include "MockRtc.h"
+#endif
 
-// custom code
-#include <LocalTime.h>
-#include <Debug.h>
-#include <Colors.h>
 #include <Writer.h>
-#include <Display.h>
+#include <Debug.h>
 
 // init RTC
 DS3231 rtc(SDA, SCL);
 
 // neopixel setup
-#define PIN 12
-#define NUMPIXELS 110
-
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+const int LED_PIN = 12;
 
 // colors
-#define colorButtonPin 2        // to adjust the color
-#define colorsDefined 15        // number of colors
-volatile byte chosenColor = 12; // the color currently stored
+#define colorButtonPin 2
 
-// Set the color globally
-volatile uint32_t colorOut = COLORS[chosenColor];
-
-const int EEPROM_ADDR = 0;
-
-const unsigned long REDRAW_PERIOD = 10000; // milliseconds
+const unsigned long TWOHALF_MINUTES = 150;
 
 // to debounce the buttons
 volatile unsigned long colorTimer = 0;
-volatile bool redraw = true;
-unsigned long redrawTimer = 0;
+
+#ifdef MCU
+    Adafruit_NeoPixel pixels(110, LED_PIN);
+
+    NeoPixelDisplay display(&pixels);
+#else
+    ConsoleDisplay display;
+#endif
+
+Writer writer(&display);
+
 
 // set next color, save to EEPROM and force redraw
 void colorButtonPressed()
 {
+    PRINT("COLOR BUTTON PRESS CALLED");
     if (millis() - colorTimer > 400UL)
     {
-        Serial.println("Color button pressed");
-        chosenColor = chosenColor + 1;
-        if (chosenColor > (colorsDefined - 1))
-        {
-            chosenColor = 0;
-        }
-        colorOut = COLORS[chosenColor];
-
-        EEPROM.write(EEPROM_ADDR, chosenColor);
-
-        redraw = true;
+        display.setNextColor();
+        writer.redraw();
         colorTimer = millis();
     }
 }
 
-class NeoPixelDisplay : public Display {
-public:
-    void show(LightSegment w) override {
-        pixels.fill(chosenColor, w.start, w.length);
-    }
-};
+void setup() {
 
-NeoPixelDisplay neoPixelDisplay;
-Writer writer(neoPixelDisplay);
+    #ifdef DEBUG
+    Serial.begin(9600);
+    pixels.begin();
+    #endif
 
-void setup()
-{
-    initializeSegments();
-
-    Serial.begin(115200); // debugging only
-
-    Serial.println("Starting up...");
-    Wire.begin();
+    PRINTLN("Starting...");
 
     rtc.begin();
+    PRINTLN("RTC initialized.");
 
-    pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
-    attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
+    pinMode(colorButtonPin, INPUT_PULLUP); // pullup resistor, no need for extra resistor in the circuit
+    attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, FALLING);
+    PRINTLN("Button interrupt attached.");
 
-    // read from EEPROM.
-    chosenColor = EEPROM.read(EEPROM_ADDR);
-    if (chosenColor >= colorsDefined)
-    { // if an error has occured
-        chosenColor = 0;
-    }
-    colorOut = COLORS[chosenColor];
+    PRINTLN("Pixels started.");
 
-    pixels.begin();
-    pixels.setBrightness(255); // 0-255
-    pixels.fill();             // equivalent to clearing
-
-    pixels.show();
-    Serial.println("NeoPixel has begun");
-
-    redraw = true; // write time immediately
 }
 
-void loop()
-{
-    // Check if it's time to update and show the time
-    if ((millis() - redrawTimer > REDRAW_PERIOD) || redraw)
-    {
-        auto localTime = getLocalTime(rtc.getUnixTime(rtc.getTime()));
+void loop() {
+    auto localTime = getLocalTime(
+        rtc.getUnixTime(rtc.getTime()),
+        TWOHALF_MINUTES
+    );
+    // PRINTLN(localTime);
+    writer.updateTime(localTime);
+}
 
-        Serial.print(localTime.hour);
-        Serial.print('-');
-        Serial.println(localTime.minute);
-
-        pixels.clear();
-        writer.showTime(localTime.hour, localTime.minute);
-        pixels.show(); // actual displaying
-
-        redrawTimer = millis();
-        redraw = false;
+#ifdef NATIVE
+int main() {
+    setup();
+    while (true) {
+        loop();
     }
 }
+#endif

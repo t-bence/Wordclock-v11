@@ -3,18 +3,13 @@
 
 #include <TimeLib.h>
 #include <Timezone.h>
-
-#define TWO_HALF_MINUTES 150 // 2.5 minutes in seconds 
+#include <ClockTime.h>
 
 // Declare the time change rules and timezone as extern
 extern TimeChangeRule myDST;
 extern TimeChangeRule mySTD;
 extern Timezone hunTZ;
 
-struct LocalTime {
-    int hour, minute;
-};
-
-LocalTime getLocalTime(long utcTime);
+ClockTime getLocalTime(long utcTime, int offset = 0);
 
 #endif // LOCALTIME_H

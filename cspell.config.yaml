@@ -1,0 +1,10 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words: [
+  wordclock, Adafruit, atmega, Bence, atmelavr, Rinky,
+  Hanning, Karlsen, Missikos, Brombal, Shae, Erisson
+]
+ignoreWords: [Hzatmega]
+import: []

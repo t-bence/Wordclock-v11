@@ -1,9 +1,25 @@
-#ifndef COLORS_H
-#define COLORS_H
+#ifndef NEOPIXELDISPLAY_H
+#define NEOPIXELDISPLAY_H
 
+#include <Display.h>
+//#include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
 
-uint32_t COLORS[] = {
+class NeoPixelDisplay : public Display {
+public:
+    NeoPixelDisplay(Adafruit_NeoPixel* p);
+    ~NeoPixelDisplay(); // Destructor to clean up
+    void show(LightSegment w) override;
+    void setNextColor() override;
+    void clear() override;
+    void show() override;
+
+private:
+    Adafruit_NeoPixel* pixels;
+    volatile int colorId;
+};
+
+const uint32_t COLORS[] = {
     Adafruit_NeoPixel::Color(127, 127, 0), // yellow
     Adafruit_NeoPixel::Color(250, 250, 0), // bright yellow
     Adafruit_NeoPixel::Color(127, 0, 127), // purple
@@ -21,4 +37,6 @@ uint32_t COLORS[] = {
     Adafruit_NeoPixel::Color(250, 100, 0)   // orange
 };
 
-#endif
+#define NUMBER_OF_COLORS 15
+
+#endif // NEOPIXELDISPLAY_H
