@@ -40,6 +40,7 @@ Writer writer(&display);
 // set next color, save to EEPROM and force redraw
 void colorButtonPressed()
 {
+    PRINT("COLOR BUTTON PRESS CALLED");
     if (millis() - colorTimer > 400UL)
     {
         display.setNextColor();
@@ -60,8 +61,8 @@ void setup() {
     rtc.begin();
     PRINTLN("RTC initialized.");
 
-    pinMode(colorButtonPin, INPUT); // pullup resistor, no need for extra resistor in the circuit
-    attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, RISING);
+    pinMode(colorButtonPin, INPUT_PULLUP); // pullup resistor, no need for extra resistor in the circuit
+    attachInterrupt(digitalPinToInterrupt(colorButtonPin), colorButtonPressed, FALLING);
     PRINTLN("Button interrupt attached.");
 
     PRINTLN("Pixels started.");

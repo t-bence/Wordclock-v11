@@ -21,3 +21,19 @@ Some of the used libraries are:
 - NeoPixel Ring simple sketch (c) 2013 Shae Erisson, Adafruit
 - [Arduino Time](http://www.arduino.cc/playground/Code/Time)
 - [Timezone by JChristensen](https://github.com/JChristensen/Timezone)
+
+## About interrupts
+
+The code uses an interrupt to control when the lights are supposed to change. This however varies (might vary?) from clock to clock.
+
+For the custom-made PCB, the following settings seem to work:
+
+- `pinMode`: `INPUT_PULLUP`
+- `attachInterrupt`: `FALLING`
+
+Originally, the code contained the following:
+
+- `pinMode`: `INPUT`
+- `attachInterrupt`: `RISING`
+
+It is not clear whether these settings are required for any hardware, but if the above ones don't work, try these as well!
